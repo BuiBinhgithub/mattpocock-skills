@@ -1,0 +1,13 @@
+{
+  "name": "mattpocock-skills",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^17.5.1",
+    "prettier": "^3.9.8"
+  }
+}
