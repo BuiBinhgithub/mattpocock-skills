@@ -10,6 +10,7 @@ Welcome to the **Management Dashboard** full-stack repository. This document def
   - `packages/contracts`: Shared schemas, DTOs, and generated Orval React Query client.
 - **Data Persistence**: Prisma encapsulated inside NestJS Custom Repositories. Domain services must never inject `PrismaService` directly.
 - **Authentication**: Stateful session over HttpOnly JWT cookies with refresh token rotation. Supported in Next.js SSR middleware.
+- **Deep Modules**: Packages are deep modules: see [packages/README.md](file:///Users/buibinh/Desktop/mattpocock-skills/packages/README.md) before adding or importing one.
 
 ## Agent skills
 
