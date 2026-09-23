@@ -47,6 +47,14 @@ jobs:
         id: boundaries
         run: pnpm run lint:boundaries 2>&1 | tee boundaries.log
 
+      - name: Code Quality & Linting (ESLint)
+        id: eslint
+        run: pnpm run lint 2>&1 | tee eslint.log
+
+      - name: Audit Critical Bugs & Flow Integrity
+        id: critical_bugs
+        run: pnpm run audit:critical 2>&1 | tee critical-bugs.log
+
       - name: Generate Prisma client
         run: pnpm --filter api run prisma:generate
 
@@ -70,30 +78,46 @@ jobs:
 
             const prettierStatus = '${{ steps.prettier.outcome }}';
             const boundaryStatus = '${{ steps.boundaries.outcome }}';
+            const eslintStatus = '${{ steps.eslint.outcome }}';
+            const criticalStatus = '${{ steps.critical_bugs.outcome }}';
             const typecheckStatus = '${{ steps.typecheck.outcome }}';
             const buildStatus = '${{ steps.build.outcome }}';
 
-            const isAllPassed = [prettierStatus, boundaryStatus, typecheckStatus, buildStatus].every(s => s === 'success');
+            const isAllPassed = [prettierStatus, boundaryStatus, eslintStatus, criticalStatus, typecheckStatus, buildStatus].every(s => s === 'success');
 
             let body = `### 🤖 CI Quality Gate & Automated Code Review\n\n`;
             body += `| Kiểm tra (Check) | Trạng thái (Status) |\n`;
             body += `| :--- | :--- |\n`;
             body += `| 🎨 Code Formatting (Prettier) | ${statusIcon(prettierStatus)} |\n`;
             body += `| 🧩 Deep Module Boundaries (dependency-cruiser) | ${statusIcon(boundaryStatus)} |\n`;
+            body += `| 🧹 Code Quality & Linting (ESLint) | ${statusIcon(eslintStatus)} |\n`;
+            body += `| 🛡️ Critical Bugs & Flow Integrity | ${statusIcon(criticalStatus)} |\n`;
             body += `| 🔍 TypeScript Typecheck (Turborepo) | ${statusIcon(typecheckStatus)} |\n`;
             body += `| 🏗️ Production Build (Next.js & NestJS) | ${statusIcon(buildStatus)} |\n\n`;
 
-            if (isAllPassed) {
-              body += `> 🎉 **Tất cả các chốt kiểm tra đều vượt qua xuất sắc!** PR này đã sẵn sàng để merge.`;
-            } else {
-              body += `> ⚠️ **Phát hiện lỗi trong PR!** Vui lòng kiểm tra chi tiết lỗi bên dưới:\n\n`;
-              
+            // Append detailed critical bug summary if exists
+            if (fs.existsSync('critical-bugs-summary.md')) {
+              const summaryContent = fs.readFileSync('critical-bugs-summary.md', 'utf8');
+              body += summaryContent + '\n\n';
+            } else if (criticalStatus !== 'success' && fs.existsSync('critical-bugs.log')) {
+              const log = fs.readFileSync('critical-bugs.log', 'utf8');
+              body += `### 🔴 KẾT LUẬN MERGE VERDICT: **CHẶN MERGE (DO NOT MERGE / BLOCKED)**\n\n`;
+              body += `<details open><summary>❌ <b>Chi tiết lỗi Critical Bugs & Flow Integrity</b></summary>\n\n\`\`\`\n${log.slice(-2500)}\n\`\`\`\n</details>\n\n`;
+            }
+
+            // Other error details if any
+            if (!isAllPassed) {
+              body += `### ⚠️ Chi tiết lỗi Quality Gates khác:\n\n`;
               if (prettierStatus !== 'success') {
                 body += `<details><summary>❌ <b>Lỗi Formatting (Prettier)</b></summary>\n\n\`\`\`\nChạy lệnh sau ở máy local để tự động format:\npnpm exec prettier --write .\n\`\`\`\n</details>\n\n`;
               }
               if (boundaryStatus !== 'success' && fs.existsSync('boundaries.log')) {
                 const log = fs.readFileSync('boundaries.log', 'utf8');
                 body += `<details open><summary>❌ <b>Lỗi Ranh giới Module (Deep Modules Violation)</b></summary>\n\n\`\`\`\n${log.slice(-1500)}\n\`\`\`\n</details>\n\n`;
+              }
+              if (eslintStatus !== 'success' && fs.existsSync('eslint.log')) {
+                const log = fs.readFileSync('eslint.log', 'utf8');
+                body += `<details open><summary>❌ <b>Lỗi ESLint Code Quality</b></summary>\n\n\`\`\`\n${log.slice(-2000)}\n\`\`\`\n</details>\n\n`;
               }
               if (typecheckStatus !== 'success' && fs.existsSync('typecheck.log')) {
                 const log = fs.readFileSync('typecheck.log', 'utf8');

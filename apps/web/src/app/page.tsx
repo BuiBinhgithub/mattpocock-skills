@@ -1,48 +1,80 @@
-import { RegisterDto } from "@repo/contracts";
+import Link from "next/link";
+import { Button } from "../components/ui/button";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "../components/ui/card";
 
-export default function Home() {
-  const sampleUser: Partial<RegisterDto> = {
-    name: "Admin User",
-    email: "admin@example.com",
-  };
-
+export default function HomePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-8 bg-neutral-50 text-neutral-900 dark:bg-neutral-950 dark:text-neutral-50">
-      <div className="max-w-2xl w-full border border-neutral-200 dark:border-neutral-800 rounded-xl p-8 bg-white dark:bg-neutral-900 shadow-sm">
-        <h1 className="text-3xl font-bold tracking-tight mb-2">
-          Management Dashboard
-        </h1>
-        <p className="text-neutral-500 dark:text-neutral-400 mb-6">
-          Full-stack Turborepo monorepo powered by Next.js, NestJS, and Matt
-          Pocock skills.
-        </p>
-
-        <div className="grid grid-cols-2 gap-4 text-sm mb-6">
-          <div className="p-4 rounded-lg bg-neutral-100 dark:bg-neutral-800">
-            <h3 className="font-semibold mb-1">Frontend (apps/web)</h3>
-            <ul className="text-neutral-600 dark:text-neutral-400 space-y-1">
-              <li>• Next.js 15 App Router</li>
-              <li>• TanStack React Query v5</li>
-              <li>• React Hook Form + Zod</li>
-              <li>• Tailwind CSS</li>
-            </ul>
+    <main className="min-h-screen flex flex-col items-center justify-center p-6 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
+      <div className="max-w-2xl w-full space-y-8 text-center">
+        <div className="space-y-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-950/80 dark:text-indigo-400">
+            <span className="h-2 w-2 rounded-full bg-indigo-500"></span>
+            Production Ready Fullstack Architecture
           </div>
-          <div className="p-4 rounded-lg bg-neutral-100 dark:bg-neutral-800">
-            <h3 className="font-semibold mb-1">Backend (apps/api)</h3>
-            <ul className="text-neutral-600 dark:text-neutral-400 space-y-1">
-              <li>• NestJS Model-Repository</li>
-              <li>• PostgreSQL + Prisma ORM</li>
-              <li>• HttpOnly Cookie JWT Auth</li>
-              <li>• Swagger OpenAPI Docs</li>
-            </ul>
-          </div>
+          <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
+            Management Dashboard
+          </h1>
+          <p className="text-slate-600 dark:text-slate-400 text-base max-w-lg mx-auto">
+            Full-stack Turborepo with Next.js App Router, NestJS
+            Model-Repository, HttpOnly Cookie JWT authentication, and Matt
+            Pocock skills.
+          </p>
         </div>
 
-        <div className="border-t border-neutral-200 dark:border-neutral-800 pt-4 flex justify-between items-center text-xs text-neutral-500">
-          <span>Type-safe Contract: @repo/contracts</span>
-          <span>
-            Sample: {sampleUser.name} ({sampleUser.email})
-          </span>
+        {/* Action Buttons */}
+        <div className="flex items-center justify-center gap-4">
+          <Link href="/login">
+            <Button size="lg" className="px-8 shadow-sm">
+              Sign In
+            </Button>
+          </Link>
+          <Link href="/register">
+            <Button variant="outline" size="lg" className="px-8">
+              Create Account
+            </Button>
+          </Link>
+        </div>
+
+        {/* System Features */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left pt-6">
+          <Card>
+            <CardHeader className="p-5">
+              <CardTitle className="text-base">
+                Next.js Frontend (apps/web)
+              </CardTitle>
+              <CardDescription className="text-xs">
+                App Router with Edge Middleware session checking, React Hook
+                Form, TanStack React Query, and Tailwind CSS.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+
+          <Card>
+            <CardHeader className="p-5">
+              <CardTitle className="text-base">
+                NestJS Backend (apps/api)
+              </CardTitle>
+              <CardDescription className="text-xs">
+                Prisma encapsulated in custom Repositories, HttpOnly JWT
+                cookies, refresh token rotation, and Swagger docs.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </div>
+
+        <div className="pt-4 text-xs text-slate-400 flex items-center justify-between border-t border-slate-200 dark:border-slate-800">
+          <span>Contract: @repo/contracts</span>
+          <Link
+            href="/dashboard"
+            className="hover:text-slate-600 dark:hover:text-slate-200 underline"
+          >
+            Go to Protected Dashboard →
+          </Link>
         </div>
       </div>
     </main>
