@@ -8,7 +8,7 @@
     "start": "nest start",
     "start:prod": "node dist/main",
     "typecheck": "tsc --noEmit",
-    "lint": "echo 'api lint passed'",
+    "lint": "eslint .",
     "prisma:generate": "prisma generate"
   },
   "dependencies": {

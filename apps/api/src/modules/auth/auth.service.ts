@@ -21,9 +21,7 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
-  async register(
-    dto: RegisterDto
-  ): Promise<{
+  async register(dto: RegisterDto): Promise<{
     user: UserProfile;
     tokens: { accessToken: string; refreshToken: string };
   }> {
@@ -51,9 +49,7 @@ export class AuthService {
     };
   }
 
-  async login(
-    dto: LoginDto
-  ): Promise<{
+  async login(dto: LoginDto): Promise<{
     user: UserProfile;
     tokens: { accessToken: string; refreshToken: string };
   }> {
