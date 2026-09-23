@@ -1,0 +1,48 @@
+name: CI Quality Gate
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  verify:
+    name: Lint, Boundaries, Typecheck & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.18.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Approve pnpm builds
+        run: pnpm approve-builds --all
+
+      - name: Check code formatting (Prettier)
+        run: pnpm exec prettier --check "**/*.{ts,tsx,js,json,md}"
+
+      - name: Verify Deep Module boundaries (dependency-cruiser)
+        run: pnpm run lint:boundaries
+
+      - name: Generate Prisma client
+        run: pnpm --filter api run prisma:generate
+
+      - name: Turborepo Typecheck
+        run: pnpm run typecheck
+
+      - name: Turborepo Production Build
+        run: pnpm run build

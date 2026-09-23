@@ -45,3 +45,13 @@ When developing in this repo, strictly follow Matt Pocock's skill lifecycle:
    - Verify code against pre-commit linters and tests.
    - Run `/code-review` (evaluating both Standards and Spec in parallel).
    - Generate PR descriptions with `/pr`.
+
+## Git & Branching Strategy
+
+- **Trunk (`main`)**: Protected. Direct commits for feature work are strictly prohibited.
+- **Feature Branches**: Every feature or fix starts on a fresh branch cut from `main`:
+  - Format: `feat/<feature-slug>` or `fix/<bug-slug>`.
+- **Pull Request Verification**:
+  - Pre-PR check: Run `/code-review` locally to verify Standards and Spec.
+  - Generate PR description using `/pr` template.
+  - Automated CI: GitHub Actions validates formatting, deep module boundaries, typecheck, and build on every PR.
