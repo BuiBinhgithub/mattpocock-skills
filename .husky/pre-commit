@@ -1,4 +1,5 @@
 pnpm exec lint-staged
 pnpm run lint:boundaries
+pnpm run audit:critical
 pnpm run lint
 pnpm run typecheck

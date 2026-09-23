@@ -92,8 +92,15 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: "Clear authentication cookies" })
   async logout(@Res({ passthrough: true }) res: Response) {
-    res.clearCookie("accessToken", { path: "/" });
-    res.clearCookie("refreshToken", { path: "/" });
+    const isProd = process.env.NODE_ENV === "production";
+    const cookieOptions = {
+      path: "/",
+      httpOnly: true,
+      secure: isProd,
+      sameSite: "lax" as const,
+    };
+    res.clearCookie("accessToken", cookieOptions);
+    res.clearCookie("refreshToken", cookieOptions);
     return { success: true };
   }
 

@@ -27,3 +27,7 @@ Thumbs.db
 
 # Turborepo
 .turbo/
+
+# CI generated reports
+critical-bugs-summary.md
+.github/critical-bugs-report.json

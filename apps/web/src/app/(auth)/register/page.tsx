@@ -28,7 +28,7 @@ export default function RegisterPage() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<RegisterDto>({
-    resolver: zodResolver(RegisterDtoSchema as any),
+    resolver: zodResolver(RegisterDtoSchema as never),
     defaultValues: {
       name: "",
       email: "",

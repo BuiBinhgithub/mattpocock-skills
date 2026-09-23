@@ -5,9 +5,7 @@ import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 import { JwtStrategy } from "./jwt.strategy";
 import { JwtAuthGuard } from "./jwt-auth.guard";
-import { USER_REPOSITORY } from "../users/repositories/user.repository.interface";
-import { PrismaUserRepository } from "../users/repositories/prisma-user.repository";
-import { PrismaService } from "../../database/prisma.service";
+import { UsersModule } from "../users/users.module";
 
 @Module({
   imports: [
@@ -15,18 +13,10 @@ import { PrismaService } from "../../database/prisma.service";
     JwtModule.register({
       secret: process.env.JWT_SECRET || "dev_secret_key_super_secure_2026",
     }),
+    UsersModule,
   ],
   controllers: [AuthController],
-  providers: [
-    AuthService,
-    JwtStrategy,
-    JwtAuthGuard,
-    PrismaService,
-    {
-      provide: USER_REPOSITORY,
-      useClass: PrismaUserRepository,
-    },
-  ],
+  providers: [AuthService, JwtStrategy, JwtAuthGuard],
   exports: [AuthService, JwtAuthGuard],
 })
 export class AuthModule {}
