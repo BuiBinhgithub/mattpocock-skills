@@ -1,4 +1,4 @@
-name: CI Quality Gate
+name: CI Quality Gate & PR Review
 
 on:
   pull_request:
@@ -6,9 +6,13 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   verify:
-    name: Lint, Boundaries, Typecheck & Build
+    name: Quality Gate & PR Review
     runs-on: ubuntu-latest
 
     steps:
@@ -26,6 +30,9 @@ jobs:
           node-version: 22
           cache: "pnpm"
 
+      - name: Register TypeScript Error Problem Matcher
+        run: echo "::add-matcher::.github/matchers/tsc.json"
+
       - name: Install dependencies
         run: pnpm install
 
@@ -33,16 +40,90 @@ jobs:
         run: pnpm approve-builds --all
 
       - name: Check code formatting (Prettier)
+        id: prettier
         run: pnpm exec prettier --check "**/*.{ts,tsx,js,json,md}"
 
       - name: Verify Deep Module boundaries (dependency-cruiser)
-        run: pnpm run lint:boundaries
+        id: boundaries
+        run: pnpm run lint:boundaries 2>&1 | tee boundaries.log
 
       - name: Generate Prisma client
         run: pnpm --filter api run prisma:generate
 
       - name: Turborepo Typecheck
-        run: pnpm run typecheck
+        id: typecheck
+        run: pnpm run typecheck 2>&1 | tee typecheck.log
 
       - name: Turborepo Production Build
-        run: pnpm run build
+        id: build
+        run: pnpm run build 2>&1 | tee build.log
+
+      - name: Post or Update PR Code Review Comment
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+
+            const statusIcon = (status) => status === 'success' ? '✅ Pass' : '❌ Failed';
+
+            const prettierStatus = '${{ steps.prettier.outcome }}';
+            const boundaryStatus = '${{ steps.boundaries.outcome }}';
+            const typecheckStatus = '${{ steps.typecheck.outcome }}';
+            const buildStatus = '${{ steps.build.outcome }}';
+
+            const isAllPassed = [prettierStatus, boundaryStatus, typecheckStatus, buildStatus].every(s => s === 'success');
+
+            let body = `### 🤖 CI Quality Gate & Automated Code Review\n\n`;
+            body += `| Kiểm tra (Check) | Trạng thái (Status) |\n`;
+            body += `| :--- | :--- |\n`;
+            body += `| 🎨 Code Formatting (Prettier) | ${statusIcon(prettierStatus)} |\n`;
+            body += `| 🧩 Deep Module Boundaries (dependency-cruiser) | ${statusIcon(boundaryStatus)} |\n`;
+            body += `| 🔍 TypeScript Typecheck (Turborepo) | ${statusIcon(typecheckStatus)} |\n`;
+            body += `| 🏗️ Production Build (Next.js & NestJS) | ${statusIcon(buildStatus)} |\n\n`;
+
+            if (isAllPassed) {
+              body += `> 🎉 **Tất cả các chốt kiểm tra đều vượt qua xuất sắc!** PR này đã sẵn sàng để merge.`;
+            } else {
+              body += `> ⚠️ **Phát hiện lỗi trong PR!** Vui lòng kiểm tra chi tiết lỗi bên dưới:\n\n`;
+              
+              if (prettierStatus !== 'success') {
+                body += `<details><summary>❌ <b>Lỗi Formatting (Prettier)</b></summary>\n\n\`\`\`\nChạy lệnh sau ở máy local để tự động format:\npnpm exec prettier --write .\n\`\`\`\n</details>\n\n`;
+              }
+              if (boundaryStatus !== 'success' && fs.existsSync('boundaries.log')) {
+                const log = fs.readFileSync('boundaries.log', 'utf8');
+                body += `<details open><summary>❌ <b>Lỗi Ranh giới Module (Deep Modules Violation)</b></summary>\n\n\`\`\`\n${log.slice(-1500)}\n\`\`\`\n</details>\n\n`;
+              }
+              if (typecheckStatus !== 'success' && fs.existsSync('typecheck.log')) {
+                const log = fs.readFileSync('typecheck.log', 'utf8');
+                body += `<details open><summary>❌ <b>Lỗi TypeScript Typecheck</b></summary>\n\n\`\`\`\n${log.slice(-2000)}\n\`\`\`\n</details>\n\n`;
+              }
+              if (buildStatus !== 'success' && fs.existsSync('build.log')) {
+                const log = fs.readFileSync('build.log', 'utf8');
+                body += `<details open><summary>❌ <b>Lỗi Production Build</b></summary>\n\n\`\`\`\n${log.slice(-2000)}\n\`\`\`\n</details>\n\n`;
+              }
+            }
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            const botComment = comments.find(c => c.body.includes('CI Quality Gate & Automated Code Review'));
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: body,
+              });
+            }
