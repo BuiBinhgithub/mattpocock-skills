@@ -1,0 +1,394 @@
+{
+  "version": "2.8",
+  "children": [
+    {
+      "type": "frame",
+      "id": "auth-canvas",
+      "name": "Auth Flow & Protected Dashboard Canvas",
+      "x": 0,
+      "y": 0,
+      "width": 2500,
+      "height": 1000,
+      "fill": "#F4F4F5",
+      "layout": "none",
+      "children": [
+        {
+          "type": "frame",
+          "id": "screen-register",
+          "name": "Screen 1: Register Page (/register)",
+          "x": 80,
+          "y": 80,
+          "width": 460,
+          "height": 680,
+          "fill": "#FFFFFF",
+          "cornerRadius": 16,
+          "stroke": { "fill": "#E4E4E7", "thickness": 1 },
+          "layout": "vertical",
+          "padding": 40,
+          "gap": 24,
+          "children": [
+            {
+              "type": "text",
+              "id": "reg-title",
+              "name": "Title",
+              "content": "Create an Account",
+              "fontSize": 24,
+              "fontWeight": 700,
+              "fill": "#09090B"
+            },
+            {
+              "type": "text",
+              "id": "reg-sub",
+              "name": "Subtitle",
+              "content": "Enter your details to create your dashboard profile.",
+              "fontSize": 14,
+              "fill": "#71717A"
+            },
+            {
+              "type": "frame",
+              "id": "reg-name-group",
+              "name": "Name Input Group",
+              "width": "fill",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                { "type": "text", "id": "reg-name-label", "content": "Full Name", "fontSize": 14, "fontWeight": 500, "fill": "#09090B" },
+                {
+                  "type": "frame",
+                  "id": "reg-name-input",
+                  "width": "fill",
+                  "height": 44,
+                  "cornerRadius": 8,
+                  "stroke": { "fill": "#E4E4E7", "thickness": 1 },
+                  "padding": 12,
+                  "children": [{ "type": "text", "id": "reg-name-placeholder", "content": "Alex Johnson", "fontSize": 14, "fill": "#A1A1AA" }]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "reg-email-group",
+              "name": "Email Input Group",
+              "width": "fill",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                { "type": "text", "id": "reg-email-label", "content": "Email Address", "fontSize": 14, "fontWeight": 500, "fill": "#09090B" },
+                {
+                  "type": "frame",
+                  "id": "reg-email-input",
+                  "width": "fill",
+                  "height": 44,
+                  "cornerRadius": 8,
+                  "stroke": { "fill": "#E4E4E7", "thickness": 1 },
+                  "padding": 12,
+                  "children": [{ "type": "text", "id": "reg-email-placeholder", "content": "alex@company.com", "fontSize": 14, "fill": "#A1A1AA" }]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "reg-pass-group",
+              "name": "Password Input Group",
+              "width": "fill",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                { "type": "text", "id": "reg-pass-label", "content": "Password", "fontSize": 14, "fontWeight": 500, "fill": "#09090B" },
+                {
+                  "type": "frame",
+                  "id": "reg-pass-input",
+                  "width": "fill",
+                  "height": 44,
+                  "cornerRadius": 8,
+                  "stroke": { "fill": "#E4E4E7", "thickness": 1 },
+                  "padding": 12,
+                  "children": [{ "type": "text", "id": "reg-pass-placeholder", "content": "••••••••••••", "fontSize": 14, "fill": "#A1A1AA" }]
+                },
+                { "type": "text", "id": "reg-pass-hint", "content": "Must be at least 8 characters long", "fontSize": 12, "fill": "#71717A" }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "reg-submit-btn",
+              "name": "Register Button",
+              "width": "fill",
+              "height": 44,
+              "cornerRadius": 8,
+              "fill": "#18181B",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "children": [{ "type": "text", "id": "reg-btn-text", "content": "Sign Up", "fontSize": 14, "fontWeight": 600, "fill": "#FAFAFA" }]
+            },
+            {
+              "type": "text",
+              "id": "reg-switch-link",
+              "name": "Switch to Login",
+              "content": "Already have an account? Sign in",
+              "fontSize": 14,
+              "fill": "#2563EB",
+              "alignSelf": "center"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "screen-login",
+          "name": "Screen 2: Login Page (/login)",
+          "x": 620,
+          "y": 80,
+          "width": 460,
+          "height": 580,
+          "fill": "#FFFFFF",
+          "cornerRadius": 16,
+          "stroke": { "fill": "#E4E4E7", "thickness": 1 },
+          "layout": "vertical",
+          "padding": 40,
+          "gap": 24,
+          "children": [
+            {
+              "type": "text",
+              "id": "login-title",
+              "name": "Title",
+              "content": "Welcome Back",
+              "fontSize": 24,
+              "fontWeight": 700,
+              "fill": "#09090B"
+            },
+            {
+              "type": "text",
+              "id": "login-sub",
+              "name": "Subtitle",
+              "content": "Enter your email and password to log in.",
+              "fontSize": 14,
+              "fill": "#71717A"
+            },
+            {
+              "type": "frame",
+              "id": "login-email-group",
+              "name": "Email Input Group",
+              "width": "fill",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                { "type": "text", "id": "login-email-label", "content": "Email Address", "fontSize": 14, "fontWeight": 500, "fill": "#09090B" },
+                {
+                  "type": "frame",
+                  "id": "login-email-input",
+                  "width": "fill",
+                  "height": 44,
+                  "cornerRadius": 8,
+                  "stroke": { "fill": "#E4E4E7", "thickness": 1 },
+                  "padding": 12,
+                  "children": [{ "type": "text", "id": "login-email-placeholder", "content": "alex@company.com", "fontSize": 14, "fill": "#A1A1AA" }]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "login-pass-group",
+              "name": "Password Input Group",
+              "width": "fill",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                { "type": "text", "id": "login-pass-label", "content": "Password", "fontSize": 14, "fontWeight": 500, "fill": "#09090B" },
+                {
+                  "type": "frame",
+                  "id": "login-pass-input",
+                  "width": "fill",
+                  "height": 44,
+                  "cornerRadius": 8,
+                  "stroke": { "fill": "#E4E4E7", "thickness": 1 },
+                  "padding": 12,
+                  "children": [{ "type": "text", "id": "login-pass-placeholder", "content": "••••••••••••", "fontSize": 14, "fill": "#A1A1AA" }]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "login-submit-btn",
+              "name": "Login Button",
+              "width": "fill",
+              "height": 44,
+              "cornerRadius": 8,
+              "fill": "#18181B",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "children": [{ "type": "text", "id": "login-btn-text", "content": "Sign In", "fontSize": 14, "fontWeight": 600, "fill": "#FAFAFA" }]
+            },
+            {
+              "type": "text",
+              "id": "login-switch-link",
+              "name": "Switch to Register",
+              "content": "Don't have an account? Sign up",
+              "fontSize": 14,
+              "fill": "#2563EB",
+              "alignSelf": "center"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "screen-dashboard",
+          "name": "Screen 3: Protected Dashboard (/dashboard)",
+          "x": 1160,
+          "y": 80,
+          "width": 1180,
+          "height": 680,
+          "fill": "#FFFFFF",
+          "cornerRadius": 16,
+          "stroke": { "fill": "#E4E4E7", "thickness": 1 },
+          "layout": "horizontal",
+          "children": [
+            {
+              "type": "frame",
+              "id": "dash-sidebar",
+              "name": "Sidebar",
+              "width": 260,
+              "height": "fill",
+              "fill": "#FAFAFA",
+              "stroke": { "fill": "#E4E4E7", "thickness": 1 },
+              "padding": 24,
+              "layout": "vertical",
+              "gap": 20,
+              "children": [
+                { "type": "text", "id": "dash-logo", "content": "Management Pro", "fontSize": 18, "fontWeight": 700, "fill": "#09090B" },
+                {
+                  "type": "frame",
+                  "id": "dash-nav-items",
+                  "width": "fill",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "nav-item-active",
+                      "width": "fill",
+                      "height": 38,
+                      "cornerRadius": 6,
+                      "fill": "#E4E4E7",
+                      "padding": 10,
+                      "children": [{ "type": "text", "id": "nav-text-1", "content": "Dashboard Overview", "fontSize": 14, "fontWeight": 500, "fill": "#09090B" }]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "nav-item-2",
+                      "width": "fill",
+                      "height": 38,
+                      "padding": 10,
+                      "children": [{ "type": "text", "id": "nav-text-2", "content": "Users & Permissions", "fontSize": 14, "fill": "#71717A" }]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "nav-item-3",
+                      "width": "fill",
+                      "height": 38,
+                      "padding": 10,
+                      "children": [{ "type": "text", "id": "nav-text-3", "content": "Settings & Security", "fontSize": 14, "fill": "#71717A" }]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "dash-main",
+              "name": "Main Content",
+              "width": 920,
+              "height": "fill",
+              "padding": 32,
+              "layout": "vertical",
+              "gap": 28,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "dash-header",
+                  "width": "fill",
+                  "layout": "horizontal",
+                  "justifyContent": "space-between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "dash-header-title",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        { "type": "text", "id": "header-title-text", "content": "Welcome, Alex Johnson 👋", "fontSize": 22, "fontWeight": 700, "fill": "#09090B" },
+                        { "type": "text", "id": "header-sub-text", "content": "Session: alex@company.com (Protected SSR Middleware)", "fontSize": 13, "fill": "#71717A" }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "dash-logout-btn",
+                      "height": 36,
+                      "padding": 12,
+                      "cornerRadius": 6,
+                      "stroke": { "fill": "#E4E4E7", "thickness": 1 },
+                      "children": [{ "type": "text", "id": "logout-btn-text", "content": "Sign Out", "fontSize": 13, "fontWeight": 500, "fill": "#EF4444" }]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "dash-cards-grid",
+                  "width": "fill",
+                  "layout": "horizontal",
+                  "gap": 20,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "card-1",
+                      "width": 260,
+                      "height": 130,
+                      "cornerRadius": 12,
+                      "stroke": { "fill": "#E4E4E7", "thickness": 1 },
+                      "padding": 20,
+                      "layout": "vertical",
+                      "gap": 8,
+                      "children": [
+                        { "type": "text", "id": "card-1-label", "content": "JWT Auth Mechanism", "fontSize": 13, "fill": "#71717A" },
+                        { "type": "text", "id": "card-1-val", "content": "HttpOnly Cookie", "fontSize": 20, "fontWeight": 700, "fill": "#10B981" }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "card-2",
+                      "width": 260,
+                      "height": 130,
+                      "cornerRadius": 12,
+                      "stroke": { "fill": "#E4E4E7", "thickness": 1 },
+                      "padding": 20,
+                      "layout": "vertical",
+                      "gap": 8,
+                      "children": [
+                        { "type": "text", "id": "card-2-label", "content": "Token Refresh Flow", "fontSize": 13, "fill": "#71717A" },
+                        { "type": "text", "id": "card-2-val", "content": "Auto Rotation", "fontSize": 20, "fontWeight": 700, "fill": "#3B82F6" }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "card-3",
+                      "width": 260,
+                      "height": 130,
+                      "cornerRadius": 12,
+                      "stroke": { "fill": "#E4E4E7", "thickness": 1 },
+                      "padding": 20,
+                      "layout": "vertical",
+                      "gap": 8,
+                      "children": [
+                        { "type": "text", "id": "card-3-label", "content": "Role / Model", "fontSize": 13, "fill": "#71717A" },
+                        { "type": "text", "id": "card-3-val", "content": "Repository Decoupled", "fontSize": 18, "fontWeight": 700, "fill": "#8B5CF6" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
