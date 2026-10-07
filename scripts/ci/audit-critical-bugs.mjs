@@ -123,7 +123,6 @@ function checkRuleSec001() {
   for (const file of targetFiles) {
     const relPath = path.relative(ROOT_DIR, file);
     const content = fs.readFileSync(file, "utf8");
-    const lines = content.split("\n");
 
     // Check res.cookie calls
     content.replace(/res\.cookie\s*\(([^)]+)\)/gs, (match, args, offset) => {
@@ -187,9 +186,9 @@ function checkRuleSec002() {
   ];
 
   const secretPatterns = [
-    /secret:\s*["'](?!(process\.env|[A-Z_]+))([a-zA-Z0-9_\-\.]{8,})["']/i,
+    /secret:\s*["'](?!(process\.env|[A-Z_]+))([a-zA-Z0-9_.-]{8,})["']/i,
     /jwtSecret\s*=\s*["'][^"']+["']/i,
-    /api[_-]?key\s*=\s*["'][a-zA-Z0-9_\-]{16,}["']/i,
+    /api[_-]?key\s*=\s*["'][a-zA-Z0-9_-]{16,}["']/i,
   ];
 
   for (const file of targetFiles) {
